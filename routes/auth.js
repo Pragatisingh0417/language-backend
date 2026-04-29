@@ -4,6 +4,19 @@ const jwt = require("jsonwebtoken");
 const User = require("../models/User");
 const authMiddleware = require("../middleware/auth");
 
+
+// GET ALL USERS (admin only ideally)
+router.get("/users", async (req, res) => {
+  try {
+    const users = await User.find().select("-password -__v");
+
+    res.json(users);
+
+  } catch (err) {
+    res.status(500).json({ msg: "Server error" });
+  }
+});
+
 // Signup
 router.post("/signup", async (req, res) => {
   try {
