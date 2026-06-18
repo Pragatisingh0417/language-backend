@@ -6,36 +6,21 @@ const verifyPurchase = async (req, res) => {
   try {
     const userId = req.user.id;
 
-    const {
-      productId,
-      receiptData,
-     
-    } = req.body;
+  const { receiptData } = req.body;
 
-    if (!productId || !receiptData) {
-      return res.status(400).json({
-        success: false,
-        message: "Missing purchase data",
-      });
-    }
+    if (!receiptData) { return res.status(400).json({ success: false, message: "Missing purchase data", }); }
 
-    const purchaseDate = new Date();
+    // const purchaseDate = new Date();
+
+
     let expiresAt = new Date();
 
-    if (productId === "com.mothertongue.monthly") {
-      expiresAt.setMonth(expiresAt.getMonth() + 1);
-    }
-
-    if (productId === "com.mothertongue.yearly") {
-      expiresAt.setFullYear(expiresAt.getFullYear() + 1);
-    }
+   
 
     const subscription = await Subscription.findOneAndUpdate(
       { user: userId },
       {
         user: userId,
-        productId,
-        // transactionId,
         receiptData,
         purchaseDate,
         expiresAt,
@@ -49,9 +34,9 @@ const verifyPurchase = async (req, res) => {
 
     return res.json({
       success: true,
-      active: true,
+      isPremium: true,
       expiresAt,
-      subscription,
+     
     });
   } catch (error) {
     console.log(error);
@@ -73,15 +58,14 @@ const getMyPlan = async (req, res) => {
 
     if (!subscription) {
       return res.json({
-        active: false,
+        isPremium: false,
       });
     }
 
-    const active = subscription.expiresAt > new Date();
+const isPremium = subscription.expiresAt > new Date();
 
     return res.json({
-      active,
-    //   productId: subscription.productId,
+      isPremium,
       expiresAt: subscription.expiresAt,
     });
   } catch (error) {
