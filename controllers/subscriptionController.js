@@ -9,7 +9,7 @@ const verifyPurchase = async (req, res) => {
     const {
       productId,
       receiptData,
-      transactionId,
+     
     } = req.body;
 
     if (!productId || !receiptData) {
@@ -35,7 +35,7 @@ const verifyPurchase = async (req, res) => {
       {
         user: userId,
         productId,
-        transactionId,
+        // transactionId,
         receiptData,
         purchaseDate,
         expiresAt,
@@ -81,7 +81,7 @@ const getMyPlan = async (req, res) => {
 
     return res.json({
       active,
-      productId: subscription.productId,
+    //   productId: subscription.productId,
       expiresAt: subscription.expiresAt,
     });
   } catch (error) {

@@ -20,7 +20,7 @@ const subscriptionSchema = new mongoose.Schema(
       default: "ios",
     },
 
-    transactionId: String,
+    
 
     receiptData: String,
 
