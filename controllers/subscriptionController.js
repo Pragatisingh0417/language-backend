@@ -13,8 +13,8 @@ const verifyPurchase = async (req, res) => {
     // const purchaseDate = new Date();
 
 
-    let expiresAt = new Date();
-
+let expiresAt = new Date();
+expiresAt.setMonth(expiresAt.getMonth() + 1);
    
 
     const subscription = await Subscription.findOneAndUpdate(
@@ -22,7 +22,7 @@ const verifyPurchase = async (req, res) => {
       {
         user: userId,
         receiptData,
-        purchaseDate,
+        // purchaseDate,
         expiresAt,
         active: true,
       },
@@ -61,7 +61,8 @@ const getMyPlan = async (req, res) => {
         isPremium: false,
       });
     }
-
+console.log("expiresAt:", subscription.expiresAt);
+console.log("now:", new Date());
 const isPremium = subscription.expiresAt > new Date();
 
     return res.json({
